@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>RentWheels — Premium Vehicle Rental</title>
+  <link rel="stylesheet" href="css/style.css" />
+</head>
+<body>
+
+<!-- NAVBAR -->
+<nav class="navbar">
+  <div class="logo" onclick="location.href='index.html'">
+    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="1" y="3" width="15" height="13" rx="2"/><path d="M16 8h4l3 5v3h-7V8z"/><circle cx="5.5" cy="18.5" r="2.5"/><circle cx="18.5" cy="18.5" r="2.5"/></svg>
+    RentWheels<span class="logo-dot">.</span>
+  </div>
+  <ul class="nav-links">
+    <li><a href="index.html" class="active">Home</a></li>
+    <li><a href="vehicles.html">Vehicles</a></li>
+    <li><a href="my-bookings.html">My Bookings</a></li>
+  </ul>
+  <div class="nav-actions">
+    <button class="btn btn-ghost" onclick="openModal('loginModal')">Sign in</button>
+    <button class="btn btn-primary" onclick="openModal('signupModal')">Get Started</button>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-inner">
+    <div class="hero-label">
+      <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><circle cx="12" cy="12" r="10"/></svg>
+      Trusted by 15,000+ customers
+    </div>
+    <h1>The smarter way to<br><em>rent a vehicle</em></h1>
+    <p>Access a fleet of 200+ premium vehicles across 25 locations. Transparent pricing, instant confirmation.</p>
+
+    <div class="search-bar">
+      <div class="field">
+        <label>Pickup Location</label>
+        <input type="text" id="searchLocation" placeholder="City or airport" />
+      </div>
+      <div class="field">
+        <label>Pickup Date</label>
+        <input type="date" id="pickupDate" />
+      </div>
+      <div class="field">
+        <label>Return Date</label>
+        <input type="date" id="returnDate" />
+      </div>
+      <div class="field">
+        <label>Vehicle Type</label>
+        <select id="searchType">
+          <option value="">All types</option>
+          <option value="Sedan">Sedan</option>
+          <option value="SUV">SUV</option>
+          <option value="Van">Van</option>
+          <option value="Bike">Motorcycle</option>
+          <option value="Scooty">Scooty</option>
+        </select>
+      </div>
+      <button class="btn btn-dark btn-lg" onclick="doSearch()">Search</button>
+    </div>
+  </div>
+</section>
+
+<!-- STATS -->
+<div class="stats-strip">
+  <div class="stat-item"><div class="num">200+</div><div class="lbl">Vehicles available</div></div>
+  <div class="stat-item"><div class="num">15,000+</div><div class="lbl">Customers served</div></div>
+  <div class="stat-item"><div class="num">25</div><div class="lbl">Pickup locations</div></div>
+  <div class="stat-item"><div class="num">4.8 / 5</div><div class="lbl">Average rating</div></div>
+</div>
+
+<!-- CATEGORIES -->
+<div class="section">
+  <div class="section-header">
+    <div class="eyebrow">Browse by type</div>
+    <h2>What are you looking for?</h2>
+  </div>
+  <div class="categories-grid">
+    <div class="category-card" onclick="location.href='vehicles.html?type=Sedan'">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M5 17H3a2 2 0 01-2-2V9a2 2 0 012-2h1l3-4h8l3 4h1a2 2 0 012 2v6a2 2 0 01-2 2h-2"/><circle cx="7.5" cy="17.5" r="2.5"/><circle cx="16.5" cy="17.5" r="2.5"/></svg>
+      <p>Sedan</p>
+    </div>
+    <div class="category-card" onclick="location.href='vehicles.html?type=SUV'">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="1" y="5" width="22" height="13" rx="2"/><path d="M5 5V3h14v2"/><circle cx="6" cy="18" r="2"/><circle cx="18" cy="18" r="2"/></svg>
+      <p>SUV</p>
+    </div>
+    <div class="category-card" onclick="location.href='vehicles.html?type=Bike'">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="5.5" cy="17.5" r="3.5"/><circle cx="18.5" cy="17.5" r="3.5"/><path d="M15 6h-5l-3 6h8l-2-6z"/><path d="M12 6V3"/></svg>
+      <p>Motorcycle</p>
+    </div>
+    <div class="category-card" onclick="location.href='vehicles.html?type=Van'">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="1" y="4" width="22" height="14" rx="2"/><path d="M1 10h22"/><circle cx="6" cy="18" r="2"/><circle cx="18" cy="18" r="2"/></svg>
+      <p>Van</p>
+    </div>
+    <div class="category-card" onclick="location.href='vehicles.html?type=Truck'">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M1 3h15v13H1z"/><path d="M16 8h4l3 5v5h-7V8z"/><circle cx="5.5" cy="18.5" r="2.5"/><circle cx="18.5" cy="18.5" r="2.5"/></svg>
+      <p>Truck</p>
+    </div>
+    <div class="category-card" onclick="location.href='vehicles.html?type=Luxury'">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M3 17H1v-4l3-6h16l3 6v4h-2"/><circle cx="7" cy="17" r="2"/><circle cx="17" cy="17" r="2"/><path d="M7 17h10"/></svg>
+      <p>Luxury</p>
+    </div>
+  </div>
+</div>
+
+<hr class="divider" />
+
+<!-- FEATURED VEHICLES -->
+<div class="section">
+  <div class="section-header">
+    <div class="eyebrow">Top picks</div>
+    <h2>Featured vehicles</h2>
+  </div>
+  <div class="vehicles-grid" id="featuredGrid"></div>
+  <div style="margin-top:1.5rem;">
+    <button class="btn btn-outline" onclick="location.href='vehicles.html'">View all vehicles &rarr;</button>
+  </div>
+</div>
+
+<hr class="divider" />
+
+<!-- HOW IT WORKS -->
+<div class="section">
+  <div class="section-header">
+    <div class="eyebrow">Simple process</div>
+    <h2>How it works</h2>
+  </div>
+  <div class="steps-grid">
+    <div class="step-card">
+      <div class="step-num">01</div>
+      <h4>Search</h4>
+      <p>Enter your location and travel dates to see available vehicles in real time.</p>
+    </div>
+    <div class="step-card">
+      <div class="step-num">02</div>
+      <h4>Choose</h4>
+      <p>Filter by type, price, and transmission to find the right fit for your trip.</p>
+    </div>
+    <div class="step-card">
+      <div class="step-num">03</div>
+      <h4>Book</h4>
+      <p>Complete your booking in under two minutes. Instant confirmation guaranteed.</p>
+    </div>
+    <div class="step-card">
+      <div class="step-num">04</div>
+      <h4>Drive</h4>
+      <p>Pick up your vehicle at the selected location and hit the road.</p>
+    </div>
+  </div>
+</div>
+
+<!-- LOGIN MODAL -->
+<div class="modal-overlay" id="loginModal">
+  <div class="modal">
+    <div class="modal-title">Sign in to your account</div>
+    <div class="form-group" style="margin-bottom:1rem;">
+      <label>Email address</label>
+      <input type="email" placeholder="you@example.com" />
+    </div>
+    <div class="form-group">
+      <label>Password</label>
+      <input type="password" placeholder="Enter your password" />
+    </div>
+    <div style="text-align:right; margin-top:0.5rem;">
+      <a href="#" style="font-size:0.8rem; color:var(--accent);">Forgot password?</a>
+    </div>
+    <div class="modal-actions">
+      <button class="btn btn-outline btn-sm" onclick="closeModal('loginModal')">Cancel</button>
+      <button class="btn btn-primary" onclick="handleLogin()">Sign in</button>
+    </div>
+    <p style="text-align:center; margin-top:1.25rem; font-size:0.8125rem; color:var(--muted);">
+      Don't have an account?
+      <a href="#" style="color:var(--accent);" onclick="closeModal('loginModal'); openModal('signupModal')">Create one</a>
+    </p>
+  </div>
+</div>
+
+<!-- SIGNUP MODAL -->
+<div class="modal-overlay" id="signupModal">
+  <div class="modal">
+    <div class="modal-title">Create your account</div>
+    <div style="display:grid; grid-template-columns:1fr 1fr; gap:0.75rem; margin-bottom:0.75rem;">
+      <div class="form-group"><label>First name</label><input type="text" placeholder="John" /></div>
+      <div class="form-group"><label>Last name</label><input type="text" placeholder="Doe" /></div>
+    </div>
+    <div class="form-group" style="margin-bottom:0.75rem;">
+      <label>Email address</label>
+      <input type="email" placeholder="you@example.com" />
+    </div>
+    <div class="form-group">
+      <label>Password</label>
+      <input type="password" placeholder="Create a password" />
+    </div>
+    <div class="modal-actions">
+      <button class="btn btn-outline btn-sm" onclick="closeModal('signupModal')">Cancel</button>
+      <button class="btn btn-primary" onclick="handleSignup()">Create account</button>
+    </div>
+  </div>
+</div>
+
+<footer>
+  <div class="footer-inner">
+    <div class="footer-logo">RentWheels.</div>
+    <p>© 2025 RentWheels. All rights reserved.</p>
+    <div style="display:flex; gap:1.5rem;">
+      <a href="#">Privacy</a>
+      <a href="#">Terms</a>
+      <a href="#">Support</a>
+    </div>
+  </div>
+</footer>
+
+<div class="toast" id="toast"></div>
+
+<script src="js/app.js"></script>
+<script>
+  document.getElementById("pickupDate").value = new Date().toISOString().split("T")[0];
+  document.getElementById("returnDate").value = new Date(Date.now() + 86400000).toISOString().split("T")[0];
+
+  document.getElementById("featuredGrid").innerHTML = vehicles
+    .filter(v => v.status === "available").slice(0, 4)
+    .map(v => `
+      <div class="vehicle-card">
+        <div class="card-img"><img src="${v.image}" alt="${v.name}" loading="lazy" /></div>
+        <div class="card-body">
+          <div class="card-type">${v.type}</div>
+          <h3>${v.name}</h3>
+          <div class="card-meta">
+            <span>
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/></svg>
+              ${v.seats} seats
+            </span>
+            <span>
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2 5h14"/></svg>
+              ${v.fuel}
+            </span>
+            <span>
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M12 1v4M12 19v4M4.22 4.22l2.83 2.83M16.95 16.95l2.83 2.83M1 12h4M19 12h4M4.22 19.78l2.83-2.83M16.95 7.05l2.83-2.83"/></svg>
+              ${v.transmission}
+            </span>
+          </div>
+          <div class="card-price">
+            <div class="price">${formatINR(v.price)} <span>/ day</span></div>
+            <button class="btn btn-primary btn-sm" onclick="location.href='booking.html?id=${v.id}'">Book now</button>
+          </div>
+        </div>
+      </div>`).join("");
+
+  function doSearch() {
+    const type      = document.getElementById("searchType").value;
+    const locVal    = document.getElementById("searchLocation").value.trim();
+    const pickup    = document.getElementById("pickupDate").value;
+    const ret       = document.getElementById("returnDate").value;
+    const params    = new URLSearchParams();
+    if (type)   params.set("type", type);
+    if (locVal) params.set("location", locVal);
+    if (pickup) params.set("pickup", pickup);
+    if (ret)    params.set("return", ret);
+    window.location.href = "vehicles.html?" + params.toString();
+  }
+
+  function openModal(id)  { document.getElementById(id).classList.add("open"); }
+  function closeModal(id) { document.getElementById(id).classList.remove("open"); }
+
+  document.querySelectorAll(".modal-overlay").forEach(m =>
+    m.addEventListener("click", e => { if (e.target === m) m.classList.remove("open"); })
+  );
+
+  function handleLogin()  { closeModal("loginModal");  showToast("Signed in successfully.", "success"); }
+  function handleSignup() { closeModal("signupModal"); showToast("Account created. Welcome aboard.", "success"); }
+</script>
+</body>
+</html>

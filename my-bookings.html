@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>My Bookings — RentWheels</title>
+  <link rel="stylesheet" href="css/style.css" />
+</head>
+<body>
+
+<nav class="navbar">
+  <div class="logo" onclick="location.href='index.html'">
+    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="1" y="3" width="15" height="13" rx="2"/><path d="M16 8h4l3 5v3h-7V8z"/><circle cx="5.5" cy="18.5" r="2.5"/><circle cx="18.5" cy="18.5" r="2.5"/></svg>
+    RentWheels<span class="logo-dot">.</span>
+  </div>
+  <ul class="nav-links">
+    <li><a href="index.html">Home</a></li>
+    <li><a href="vehicles.html">Vehicles</a></li>
+    <li><a href="my-bookings.html" class="active">My Bookings</a></li>
+  </ul>
+  <div class="nav-actions">
+    <button class="btn btn-ghost">Sign in</button>
+    <button class="btn btn-primary">Get Started</button>
+  </div>
+</nav>
+
+<div class="section">
+  <div class="section-header">
+    <div class="eyebrow">Account</div>
+    <h2>My bookings</h2>
+  </div>
+
+  <!-- FILTER TABS -->
+  <div class="filters-bar">
+    <button class="filter-chip active" data-status="all">All</button>
+    <button class="filter-chip" data-status="confirmed">Confirmed</button>
+    <button class="filter-chip" data-status="pending">Pending</button>
+    <button class="filter-chip" data-status="completed">Completed</button>
+    <button class="filter-chip" data-status="cancelled">Cancelled</button>
+  </div>
+
+  <div class="bookings-list" id="bookingsList"></div>
+</div>
+
+<!-- CANCEL MODAL -->
+<div class="modal-overlay" id="cancelModal">
+  <div class="modal">
+    <div class="modal-title">Cancel this booking?</div>
+    <p style="color:var(--muted); font-size:0.875rem; margin-bottom:0.25rem;">
+      You are about to cancel booking <strong id="cancelId" style="color:var(--text);"></strong>.
+    </p>
+    <p style="color:var(--muted); font-size:0.875rem;">This action cannot be undone.</p>
+    <div class="modal-actions">
+      <button class="btn btn-outline btn-sm" onclick="closeModal('cancelModal')">Keep booking</button>
+      <button class="btn btn-danger btn-sm" onclick="confirmCancel()">Cancel booking</button>
+    </div>
+  </div>
+</div>
+
+<footer>
+  <div class="footer-inner">
+    <div class="footer-logo">RentWheels.</div>
+    <p>© 2025 RentWheels. All rights reserved.</p>
+    <div style="display:flex; gap:1.5rem;"><a href="#">Privacy</a><a href="#">Terms</a></div>
+  </div>
+</footer>
+
+<div class="toast" id="toast"></div>
+
+<script src="js/app.js"></script>
+<script>
+  let activeStatus = "all";
+  let cancelTarget = null;
+  let bookings = myBookings.map(b => ({ ...b }));
+
+  const carSVG = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M5 17H3a2 2 0 01-2-2V9a2 2 0 012-2h1l3-4h8l3 4h1a2 2 0 012 2v6a2 2 0 01-2 2h-2"/><circle cx="7.5" cy="17.5" r="2.5"/><circle cx="16.5" cy="17.5" r="2.5"/></svg>`;
+
+  function renderBookings() {
+    const list = activeStatus === "all"
+      ? bookings
+      : bookings.filter(b => b.status === activeStatus);
+
+    if (!list.length) {
+      document.getElementById("bookingsList").innerHTML = `
+        <div class="empty-state">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
+          <h3>No bookings found</h3>
+          <p>You have no ${activeStatus === "all" ? "" : activeStatus + " "}bookings yet.</p>
+          <button class="btn btn-primary btn-sm" style="margin-top:1rem;" onclick="location.href='vehicles.html'">Browse vehicles</button>
+        </div>`;
+      return;
+    }
+
+    document.getElementById("bookingsList").innerHTML = list.map(b => {
+      const v = getVehicle(b.vehicleId);
+      return `
+        <div class="booking-item">
+          <div class="b-icon">${carSVG}</div>
+          <div class="b-info">
+            <h4>
+              ${v ? v.name : "Vehicle"}
+              <span class="status-pill ${b.status}">${b.status}</span>
+            </h4>
+            <p>Booking ID: ${b.id} &nbsp;&middot;&nbsp; ${b.pickup}</p>
+            <div class="b-dates">
+              <span>Pickup: ${formatDate(b.from)}</span>
+              <span>Return: ${formatDate(b.to)}</span>
+              <span>${b.days} day${b.days > 1 ? "s" : ""}</span>
+            </div>
+          </div>
+          <div class="b-actions">
+            <span class="b-total">${formatINR(b.total)}</span>
+            ${b.status === "confirmed" || b.status === "pending" ? `
+              <button class="btn btn-outline btn-sm" onclick="location.href='booking.html?id=${b.vehicleId}'">Modify</button>
+              <button class="btn btn-danger btn-sm" onclick="openCancel('${b.id}')">Cancel</button>
+            ` : ""}
+            ${b.status === "completed" ? `
+              <button class="btn btn-outline btn-sm" onclick="location.href='booking.html?id=${b.vehicleId}'">Rebook</button>
+            ` : ""}
+          </div>
+        </div>`;
+    }).join("");
+  }
+
+  document.querySelectorAll(".filter-chip").forEach(chip =>
+    chip.addEventListener("click", () => {
+      document.querySelectorAll(".filter-chip").forEach(c => c.classList.remove("active"));
+      chip.classList.add("active");
+      activeStatus = chip.dataset.status;
+      renderBookings();
+    })
+  );
+
+  function openCancel(id) {
+    cancelTarget = id;
+    document.getElementById("cancelId").textContent = id;
+    document.getElementById("cancelModal").classList.add("open");
+  }
+
+  function closeModal(id) { document.getElementById(id).classList.remove("open"); }
+
+  function confirmCancel() {
+    const b = bookings.find(b => b.id === cancelTarget);
+    if (b) b.status = "cancelled";
+    closeModal("cancelModal");
+    showToast(`Booking ${cancelTarget} has been cancelled.`, "info");
+    renderBookings();
+  }
+
+  document.querySelectorAll(".modal-overlay").forEach(m =>
+    m.addEventListener("click", e => { if (e.target === m) m.classList.remove("open"); })
+  );
+
+  renderBookings();
+</script>
+</body>
+</html>
