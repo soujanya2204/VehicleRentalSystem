@@ -1,7 +1,13 @@
 import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useAuth } from '../context/AuthContext'
-import { Eye, EyeOff, Car } from 'lucide-react'
+import { Eye, EyeOff, Car, Shield, TrendingUp, Clock } from 'lucide-react'
+
+const features = [
+  { icon: Shield, title: 'Secure Platform', desc: 'Enterprise-grade security for your fleet data' },
+  { icon: TrendingUp, title: 'Real-time Analytics', desc: 'Track revenue, bookings and performance live' },
+  { icon: Clock, title: '24/7 Management', desc: 'Manage your fleet anytime, from anywhere' },
+]
 
 export default function Login() {
   const { login } = useAuth()
@@ -17,111 +23,134 @@ export default function Login() {
     setLoading(true)
     setTimeout(() => {
       const success = login(form.email, form.password)
-      if (success) {
-        navigate('/vendor')
-      } else {
-        setError('Invalid email or password. Please try again.')
-      }
+      if (success) navigate('/vendor')
+      else setError('Invalid email or password. Please try again.')
       setLoading(false)
-    }, 600)
+    }, 700)
   }
 
   return (
-    <div className="min-h-screen bg-slate-50 flex">
-      {/* Left panel */}
-      <div className="hidden lg:flex lg:w-1/2 bg-slate-900 flex-col justify-between p-12">
-        <div className="flex items-center gap-3">
-          <div className="w-9 h-9 bg-blue-600 rounded-lg flex items-center justify-center">
-            <Car size={20} className="text-white" />
+    <div className="min-h-screen flex bg-white">
+      {/* Left */}
+      <div className="hidden lg:flex lg:w-[52%] bg-slate-900 flex-col justify-between p-14 relative overflow-hidden">
+        <div className="absolute inset-0 bg-gradient-to-br from-blue-900/40 via-slate-900 to-slate-900" />
+        <div className="absolute top-0 right-0 w-96 h-96 bg-blue-600/10 rounded-full -translate-y-1/2 translate-x-1/2 blur-3xl" />
+        <div className="absolute bottom-0 left-0 w-64 h-64 bg-blue-600/10 rounded-full translate-y-1/2 -translate-x-1/2 blur-3xl" />
+
+        <div className="relative flex items-center gap-3">
+          <div className="w-9 h-9 bg-blue-600 rounded-xl flex items-center justify-center">
+            <Car size={18} className="text-white" />
           </div>
-          <span className="text-white text-xl font-semibold tracking-tight">RentWheels</span>
+          <span className="text-white text-xl font-bold tracking-tight">RentWheels</span>
         </div>
-        <div>
-          <h2 className="text-4xl font-bold text-white leading-snug">
-            Manage your fleet.<br />Grow your business.
-          </h2>
-          <p className="text-slate-400 mt-4 text-base leading-relaxed">
-            The all-in-one vendor platform for vehicle rentals. Track bookings, manage vehicles, and handle customer verification from one place.
-          </p>
+
+        <div className="relative space-y-8">
+          <div>
+            <h2 className="text-4xl font-bold text-white leading-tight">
+              Manage your fleet.<br />
+              <span className="text-blue-400">Grow your business.</span>
+            </h2>
+            <p className="text-slate-400 mt-4 text-base leading-relaxed max-w-sm">
+              The all-in-one vendor platform for vehicle rentals. Track bookings, manage vehicles, and handle customer verification.
+            </p>
+          </div>
+
+          <div className="space-y-4">
+            {features.map(({ icon: Icon, title, desc }) => (
+              <div key={title} className="flex items-start gap-3">
+                <div className="w-8 h-8 bg-blue-600/20 border border-blue-600/30 rounded-lg flex items-center justify-center shrink-0 mt-0.5">
+                  <Icon size={15} className="text-blue-400" />
+                </div>
+                <div>
+                  <p className="text-white text-sm font-medium">{title}</p>
+                  <p className="text-slate-500 text-xs mt-0.5">{desc}</p>
+                </div>
+              </div>
+            ))}
+          </div>
         </div>
-        <div className="grid grid-cols-3 gap-4">
-          {[['1,200+', 'Active Rentals'], ['98%', 'Uptime'], ['4.9', 'Vendor Rating']].map(([val, label]) => (
-            <div key={label} className="bg-slate-800 rounded-xl p-4">
-              <p className="text-white text-2xl font-bold">{val}</p>
-              <p className="text-slate-400 text-xs mt-1">{label}</p>
+
+        <div className="relative grid grid-cols-3 gap-3">
+          {[['1,200+', 'Active Rentals'], ['98%', 'Uptime SLA'], ['4.9 / 5', 'Vendor Rating']].map(([val, label]) => (
+            <div key={label} className="bg-white/5 border border-white/10 rounded-xl p-4 backdrop-blur-sm">
+              <p className="text-white text-xl font-bold">{val}</p>
+              <p className="text-slate-500 text-xs mt-1">{label}</p>
             </div>
           ))}
         </div>
       </div>
 
-      {/* Right panel */}
-      <div className="flex-1 flex items-center justify-center p-6">
-        <div className="w-full max-w-md">
-          {/* Mobile logo */}
+      {/* Right */}
+      <div className="flex-1 flex items-center justify-center p-8 bg-slate-50">
+        <div className="w-full max-w-sm">
           <div className="flex items-center gap-3 mb-10 lg:hidden">
-            <div className="w-9 h-9 bg-blue-600 rounded-lg flex items-center justify-center">
-              <Car size={20} className="text-white" />
+            <div className="w-9 h-9 bg-blue-600 rounded-xl flex items-center justify-center">
+              <Car size={18} className="text-white" />
             </div>
-            <span className="text-slate-900 text-xl font-semibold tracking-tight">RentWheels</span>
+            <span className="text-slate-900 text-xl font-bold tracking-tight">RentWheels</span>
           </div>
 
           <div className="mb-8">
-            <h1 className="text-2xl font-bold text-slate-900">Vendor Sign In</h1>
-            <p className="text-slate-500 text-sm mt-1">Enter your credentials to access the dashboard</p>
+            <h1 className="text-2xl font-bold text-slate-900">Welcome back</h1>
+            <p className="text-slate-500 text-sm mt-1.5">Sign in to your vendor dashboard</p>
           </div>
 
-          <form onSubmit={handleSubmit} className="space-y-5">
+          <form onSubmit={handleSubmit} className="space-y-4">
             <div>
               <label className="block text-sm font-medium text-slate-700 mb-1.5">Email Address</label>
               <input
-                type="email"
-                required
-                value={form.email}
+                type="email" required value={form.email}
                 onChange={(e) => setForm({ ...form, email: e.target.value })}
                 placeholder="vendor@rentwheels.com"
-                className="w-full border border-slate-200 rounded-lg px-4 py-2.5 text-sm text-slate-800 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition"
+                className="w-full border border-slate-200 bg-white rounded-lg px-4 py-2.5 text-sm text-slate-800 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition shadow-sm"
               />
             </div>
 
             <div>
-              <label className="block text-sm font-medium text-slate-700 mb-1.5">Password</label>
+              <div className="flex items-center justify-between mb-1.5">
+                <label className="block text-sm font-medium text-slate-700">Password</label>
+                <button type="button" className="text-xs text-blue-600 hover:text-blue-700">Forgot password?</button>
+              </div>
               <div className="relative">
                 <input
-                  type={showPassword ? 'text' : 'password'}
-                  required
-                  value={form.password}
+                  type={showPassword ? 'text' : 'password'} required value={form.password}
                   onChange={(e) => setForm({ ...form, password: e.target.value })}
                   placeholder="Enter your password"
-                  className="w-full border border-slate-200 rounded-lg px-4 py-2.5 pr-11 text-sm text-slate-800 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition"
+                  className="w-full border border-slate-200 bg-white rounded-lg px-4 py-2.5 pr-11 text-sm text-slate-800 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition shadow-sm"
                 />
-                <button
-                  type="button"
-                  onClick={() => setShowPassword((s) => !s)}
-                  className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600"
-                >
-                  {showPassword ? <EyeOff size={17} /> : <Eye size={17} />}
+                <button type="button" onClick={() => setShowPassword(s => !s)}
+                  className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600">
+                  {showPassword ? <EyeOff size={16} /> : <Eye size={16} />}
                 </button>
               </div>
             </div>
 
             {error && (
-              <div className="bg-red-50 border border-red-200 text-red-600 text-sm px-4 py-3 rounded-lg">
+              <div className="bg-red-50 border border-red-200 text-red-600 text-sm px-4 py-3 rounded-lg flex items-center gap-2">
+                <span className="w-1.5 h-1.5 bg-red-500 rounded-full shrink-0" />
                 {error}
               </div>
             )}
 
-            <button
-              type="submit"
-              disabled={loading}
-              className="w-full bg-blue-600 hover:bg-blue-700 disabled:opacity-60 text-white font-medium text-sm py-2.5 rounded-lg transition-colors"
-            >
-              {loading ? 'Signing in...' : 'Sign In'}
+            <button type="submit" disabled={loading}
+              className="w-full bg-blue-600 hover:bg-blue-700 disabled:opacity-60 text-white font-semibold text-sm py-2.5 rounded-lg transition-colors shadow-sm mt-2">
+              {loading ? (
+                <span className="flex items-center justify-center gap-2">
+                  <svg className="animate-spin w-4 h-4" viewBox="0 0 24 24" fill="none">
+                    <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
+                    <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v8z" />
+                  </svg>
+                  Signing in...
+                </span>
+              ) : 'Sign In'}
             </button>
           </form>
 
-          <p className="text-xs text-slate-400 text-center mt-8">
-            Demo credentials: vendor@rentwheels.com / vendor123
-          </p>
+          <div className="mt-8 p-4 bg-blue-50 border border-blue-100 rounded-xl">
+            <p className="text-xs font-semibold text-blue-700 mb-1">Demo Credentials</p>
+            <p className="text-xs text-blue-600">vendor@rentwheels.com</p>
+            <p className="text-xs text-blue-600">vendor123</p>
+          </div>
         </div>
       </div>
     </div>
